@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @State var name = ""
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = RegsiterViewViewModel()
     
     var body: some View {
         VStack {
@@ -19,18 +17,26 @@ struct RegisterView: View {
             
             // Register Form
             Form {
-                TextField("Email Address", text: $name)
+                if !viewModel.errorMessage.isEmpty {
+                    Text(viewModel.errorMessage)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.red)
+                        .padding(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+                }
+                
+                TextField("User Name", text: $viewModel.name)
                     .padding(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
                     .autocorrectionDisabled()
-                TextField("Email Address", text: $email)
+                TextField("Email Address", text: $viewModel.email)
                     .padding(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
                     .autocorrectionDisabled()
                     .autocapitalization(.none)
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
                     .padding(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+                SecureField("Confirem Password", text: $viewModel.confirmPassword)
                 
                 TLCustomButton(title: "Regsiter", backgroundColor: .pink) {
-                    // Register
+                    viewModel.register()
                 }
             }
             .scrollContentBackground(.hidden)

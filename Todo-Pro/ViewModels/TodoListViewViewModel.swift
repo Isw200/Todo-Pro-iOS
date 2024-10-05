@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+
+class TodoListViewViewModel: ObservableObject {
+    @Published var showAddTodo: Bool = false
+    
+    init(){}
+}

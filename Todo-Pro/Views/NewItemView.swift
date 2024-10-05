@@ -8,8 +8,32 @@
 import SwiftUI
 
 struct NewItemView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    @StateObject var viewModel = NewItemViewViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            Form{
+                TextField("Title", text: $viewModel.title)
+                
+                DatePicker("Due Date", selection: $viewModel.dueDate)
+                //                    .datePickerStyle()
+                
+                TLCustomButton(title: "Add task", backgroundColor: .purple) {
+                    //
+                }
+            }
+            .navigationBarTitle("Add New Task")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Cancel") {
+                        dismiss()
+                    }.tint(.red)
+                }
+            }
+        }
     }
 }
 

@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+/// Single Todo List Item Row
+
+class TodoListItemViewViewModel: ObservableObject {
+    init(){}
+}
