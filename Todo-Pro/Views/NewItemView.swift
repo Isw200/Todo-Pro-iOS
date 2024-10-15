@@ -9,7 +9,6 @@ import SwiftUI
 
 struct NewItemView: View {
     @Environment(\.dismiss) var dismiss
-    
     @StateObject var viewModel = NewItemViewViewModel()
     
     var body: some View {
@@ -18,10 +17,20 @@ struct NewItemView: View {
                 TextField("Title", text: $viewModel.title)
                 
                 DatePicker("Due Date", selection: $viewModel.dueDate)
-                //                    .datePickerStyle()
+                
+                ZStack(alignment: .leading){
+                    if viewModel.description.isEmpty {
+                        Text("Description")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 16, weight: .light))
+                    }
+                    
+                    TextEditor(text: $viewModel.description)
+                }
                 
                 TLCustomButton(title: "Add task", backgroundColor: .purple) {
-                    //
+                    viewModel.addTodo()
+                    dismiss()
                 }
             }
             .navigationBarTitle("Add New Task")
@@ -32,6 +41,9 @@ struct NewItemView: View {
                         dismiss()
                     }.tint(.red)
                 }
+            }
+            .alert(isPresented: $viewModel.showError) {
+                Alert(title: Text("Error"), message: Text("\(viewModel.errorMessage)")) 
             }
         }
     }
